@@ -36,6 +36,7 @@ export default async function AdminLayout({
     { name: "Admin Panel", href: "/admin", icon: ShieldAlert },
     { name: "Politicians", href: "/admin/politicians", icon: Users },
     { name: "Database Janji", href: "/admin/promises", icon: Database },
+    { name: "RUU / Legislation", href: "/admin/legislations", icon: Scale },
     { name: "Verifications", href: "/admin/verifications", icon: MessageSquareWarning },
   ];
 
