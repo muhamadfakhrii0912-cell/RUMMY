@@ -2,26 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 226 50% 4%; /* Dark, midnight blue almost black */
+    --foreground: 210 40% 98%;
+    
+    --card: 226 50% 6%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 226 50% 6%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 174 86% 45%; /* Electric Teal */
+    --primary-foreground: 226 50% 6%;
+    
+    --secondary: 226 30% 12%; 
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 226 30% 15%;
+    --muted-foreground: 215 20% 65%;
+    
+    --accent: 174 86% 45%;
+    --accent-foreground: 226 50% 6%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 226 30% 15%;
+    --input: 226 30% 15%;
+    --ring: 174 86% 45%;
+    
+    --success: 142 72% 29%;
+    --warning: 38 92% 50%;
+    --danger: 0 84% 60%;
+  }
+
+  * {
+    @apply border-border selection:bg-primary/20 selection:text-primary;
+  }
+  body {
+    @apply bg-background text-foreground font-sans overflow-x-hidden;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
+@layer components {
+  .glass-panel {
+    @apply bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] shadow-[0_4px_24px_-8px_rgba(0,0,0,0.5)];
+  }
+  
+  .glass-card-hover {
+    @apply glass-panel hover:bg-white/[0.04] hover:border-primary/30 hover:shadow-[0_0_30px_-5px_rgba(45,212,191,0.15)] transition-all duration-500 rounded-2xl;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-teal-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent;
+    animation: text-gradient 8s linear infinite;
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .blob-bg {
+    @apply absolute rounded-full mix-blend-screen filter blur-[100px] opacity-40;
+    animation: blob 7s infinite;
   }
 }

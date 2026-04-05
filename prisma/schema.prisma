@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(CITIZEN)
+  ktpVerified   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  verifications  Verification[]
+  comments       Comment[]
+  bookmarks      Bookmark[]
+  auditLogs      AuditLog[]     // New Feature: Anti-Manipulasi
+
+  @@map("users")
+}
+
+enum Role {
+  GUEST
+  CITIZEN
+  VERIFIED_CITIZEN
+  JOURNALIST
+  MODERATOR
+  ADMIN
+}
+
+model Politician {
+  id          String   @id @default(cuid())
+  name        String
+  photo       String?
+  party       String?
+  position    String?
+  bio         String?  @db.Text
+  truthScore  Float    @default(50.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  promises Promise[]
+
+  @@map("politicians")
+}
+
+model Promise {
+  id             String   @id @default(cuid())
+  politicianId   String
+  title          String
+  description    String   @db.Text
+  category       String
+  deadline       DateTime?
+  status         PromiseStatus @default(PENDING)
+  source         String?
+  sourceUrl      String?
+  metrics        String?  @db.Text
+  
+  // RUU Link
+  legislationId  String?   
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  politician   Politician          @relation(fields: [politicianId], references: [id], onDelete: Cascade)
+  legislations PromiseLegislation[]
+  comments     Comment[]
+  bookmarks    Bookmark[]
+  auditLogs    AuditLog[]          // Track AI vs Admin changes
+
+  @@map("promises")
+}
+
+enum PromiseStatus {
+  PENDING
+  ON_TRACK
+  DELAYED
+  FULFILLED
+  FAILED
+  CONTRADICTED
+}
+
+model Legislation {
+  id          String   @id @default(cuid())
+  title       String
+  number      String?
+  type        String
+  status      String
+  description String   @db.Text
+  url         String?
+  passedAt    DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  promises    PromiseLegislation[]
+  simulations ImpactSimulation[]
+
+  @@map("legislations")
+}
+
+model PromiseLegislation {
+  id           String   @id @default(cuid())
+  promiseId    String
+  legislationId String
+  relationType String
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now())
+
+  promise     Promise    @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+  legislation Legislation @relation(fields: [legislationId], references: [id], onDelete: Cascade)
+
+  @@unique([promiseId, legislationId])
+  @@map("promise_legislations")
+}
+
+model ImpactSimulation {
+  id            String   @id @default(cuid())
+  legislationId String
+  userProfile   String   @db.Text
+  impactResult  String   @db.Text
+  createdAt     DateTime @default(now())
+
+  legislation Legislation @relation(fields: [legislationId], references: [id], onDelete: Cascade)
+
+  @@map("impact_simulations")
+}
+
+model Verification {
+  id           String   @id @default(cuid())
+  userId       String
+  promiseId    String?
+  title        String
+  description  String   @db.Text
+  imageUrl     String?
+  
+  // GPS & EXIF Data
+  latitude        Float?
+  longitude       Float?
+  exifData        String?            @db.Text // JSON string representing raw EXIF
+  gpsVerified     Boolean            @default(false)
+  
+  // AI Analysis
+  aiCategory      String?
+  aiConfidence    Float?
+  aiRawResponse   String?            @db.Text
+  aiVerified      Boolean            @default(false)
+  
+  // Pipeline Status
+  pipelineStatus  VerificationPipelineStatus @default(UPLOADING)
+  
+  status       VerificationStatus @default(PENDING)
+  moderatorId  String?
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("verifications")
+}
+
+enum VerificationPipelineStatus {
+  UPLOADING
+  GPS_VALIDATING
+  AI_ANALYZING
+  LOCKED
+  FAILED
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  userId     String
+  promiseId  String?
+  content    String   @db.Text
+  voteUp     Int      @default(0)
+  voteDown   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promise Promise? @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  promiseId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promise Promise @relation(fields: [promiseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, promiseId])
+  @@map("bookmarks")
+}
+
+// ----------------------------------------------------
+// NEW: Anti-Manipulasi Audit Log (Sesuai Konsep Data Pipeline)
+// ----------------------------------------------------
+model AuditLog {
+  id          String   @id @default(cuid())
+  action      String   // e.g., "STATUS_CHANGE", "AI_INGESTION"
+  entityType  String   // e.g., "PROMISE", "VERIFICATION"
+  entityId    String   // The ID of the affected promise/verification
+  oldValue    String?  @db.Text
+  newValue    String?  @db.Text
+  reason      String?  @db.Text
+
+  pipelineStep    String?
+  pipelineResult  String?  @db.Text
+  
+  // Did admin do this, or AI script?
+  userId      String?
+  aiAgent     Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  promise     Promise? @relation(fields: [entityId], references: [id], onDelete: Cascade, map: "AuditLog_promise_fkey_custom")
+
+  @@map("audit_logs")
+}
