@@ -221,8 +221,29 @@ export default function Home() {
   const [openFAQs, setOpenFAQs] = useState<Set<number>>(new Set([0]));
   const [faqCategory, setFaqCategory] = useState("Semua");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [stats, setStats] = useState({
+    promises: 12403,
+    legislations: 342,
+    politicians: 580,
+    accuracy: 94.2
+  });
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    fetch("/api/stats")
+      .then(res => res.json())
+      .then(data => {
+        if(!data.error) {
+          setStats({
+            promises: data.promises,
+            legislations: data.legislations,
+            politicians: data.politicians,
+            accuracy: 94.2 // AI accuracy stays static or can be calculated
+          });
+        }
+      })
+      .catch(console.error);
+  }, []);
 
   if (!mounted) return <div className="min-h-screen bg-background" />;
 
@@ -378,10 +399,10 @@ export default function Home() {
               {/* Stats Mockup */}
               <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/10 pt-10">
                 {[
-                  { label: "Janji Dilacak", value: "12,403", p: "+124 hari ini" },
-                  { label: "RUU Dianalisis", value: "342", p: "Real-time" },
-                  { label: "Politisi Aktif", value: "580+", p: "Nasional & Daerah" },
-                  { label: "Akurasi AI", value: "94.2%", p: "Model NLP" },
+                  { label: "Janji Dilacak", value: stats.promises.toLocaleString(), p: "Real-time DB" },
+                  { label: "RUU Dianalisis", value: stats.legislations.toLocaleString(), p: "Real-time DB" },
+                  { label: "Politisi Aktif", value: stats.politicians.toLocaleString(), p: "Nasional & Daerah" },
+                  { label: "Akurasi AI", value: `${stats.accuracy}%`, p: "Model NLP" },
                 ].map((stat, i) => (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}

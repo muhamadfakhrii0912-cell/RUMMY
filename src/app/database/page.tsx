@@ -69,7 +69,9 @@ export default async function DatabasePage({
                    </span>
                 </div>
                 
-                <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">{promise.title}</h3>
+                <Link href={`/database/${promise.id}`}>
+                  <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">{promise.title}</h3>
+                </Link>
                 <p className="text-sm text-muted-foreground mb-6 flex-1 line-clamp-3">{promise.description}</p>
                 
                 <div className="pt-4 border-t border-white/10 flex items-center justify-between mt-auto">
@@ -85,15 +87,16 @@ export default async function DatabasePage({
                 </div>
 
                 {/* Footer Action */}
-                <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-muted-foreground">
+                <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-muted-foreground relative z-10">
                   <div className="flex items-center gap-4 text-xs font-medium">
                     <span className="flex items-center gap-1.5"><Bookmark className="w-4 h-4" /> {promise._count.bookmarks} Disimpan</span>
+                    <Link href={`/database/${promise.id}`} className="hover:text-primary transition-colors underline decoration-white/20 underline-offset-4">Lihat Detail &rarr;</Link>
                   </div>
                   {session ? (
                      <BookmarkButton promiseId={promise.id} />
                   ) : (
-                     <Link href="/login" className="text-xs text-primary hover:underline font-semibold tracking-wide">
-                        Login untuk Memantau
+                     <Link href={`/database/${promise.id}`} className="text-xs text-primary hover:underline font-semibold tracking-wide">
+                        Baca Analisis AI
                      </Link>
                   )}
                 </div>
