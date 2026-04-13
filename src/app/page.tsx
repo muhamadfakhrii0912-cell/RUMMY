@@ -1,17 +1,241 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Shield, TrendingUp, Users, Search, BarChart3, Upload, Activity, FileText, CheckCircle2 } from "lucide-react";
+import {
+  ArrowRight,
+  Shield,
+  TrendingUp,
+  Users,
+  Search,
+  BarChart3,
+  Activity,
+  FileText,
+  CheckCircle2,
+  HelpCircle,
+  ChevronDown,
+  Zap,
+  Lock,
+  Globe,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+/* ─── FAQ Data ─── */
+interface FAQItem {
+  question: string;
+  answer: string;
+  icon: React.ElementType;
+  category: string;
+}
+
+const faqData: FAQItem[] = [
+  {
+    category: "Tentang RUUMY",
+    icon: HelpCircle,
+    question: "Apa itu RUUMY?",
+    answer:
+      "RUUMY (Democratic Accountability Engine) adalah platform Civic Technology berbasis kecerdasan buatan yang dirancang untuk menjaga transparansi demokrasi di Indonesia. Platform ini menghubungkan tiga titik penting yang sering terputus: janji kampanye politisi, proses legislasi (RUU/UU), dan dampak nyata yang dirasakan masyarakat.",
+  },
+  {
+    category: "Tentang RUUMY",
+    icon: Shield,
+    question: "Mengapa RUUMY dibuat?",
+    answer:
+      "Demokrasi Indonesia mengalami fenomena 'Democratic Black Hole' — dimana janji politik menghilang dalam proses birokrasi. RUU tiba-tiba disahkan tanpa warga tahu dampaknya, anggaran bocor tanpa pengawasan. RUUMY hadir untuk menerangi titik-titik buta ini dengan data dan teknologi AI.",
+  },
+  {
+    category: "Tentang RUUMY",
+    icon: Globe,
+    question: "Apakah RUUMY berafiliasi dengan partai politik?",
+    answer:
+      "Tidak. RUUMY adalah platform independen yang berpegang pada prinsip netralitas data. Kami tidak berpihak pada partai, kubu, atau ideologi manapun. Semua analisis dilakukan oleh sistem AI berdasarkan data faktual — bukan opini.",
+  },
+  {
+    category: "Fitur & Cara Kerja",
+    icon: Search,
+    question: "Bagaimana cara RUUMY melacak janji politik?",
+    answer:
+      "RUUMY menggunakan sistem Promise Capture yang mengumpulkan janji politik dari video debat, pidato resmi, posting media sosial, dan dokumen kampanye. Sistem NLP kami mengekstrak esensi janji tersebut, lalu menyimpannya dalam database lengkap dengan konteks, deadline, dan metrik keberhasilan yang terukur.",
+  },
+  {
+    category: "Fitur & Cara Kerja",
+    icon: FileText,
+    question: "Apa itu fitur RUU Watch?",
+    answer:
+      "RUU Watch adalah fitur pemantauan legislasi secara real-time. Fitur ini melacak progres setiap Rancangan Undang-Undang, menganalisis isi pasal, dan mendeteksi apakah RUU tersebut konsisten atau bertentangan dengan janji kampanye yang pernah diucapkan oleh politisi terkait.",
+  },
+  {
+    category: "Fitur & Cara Kerja",
+    icon: BarChart3,
+    question: "Apa itu Promise Radar dan Kebenaran Index?",
+    answer:
+      "Promise Radar adalah dashboard visual interaktif berupa bubble chart yang memperlihatkan status janji politik: Hijau (Tercapai), Kuning (Dalam Proses), Merah (Gagal). Kebenaran Index adalah skor kredibilitas dinamis untuk setiap politisi berdasarkan rasio janji yang ditepati versus yang diingkari.",
+  },
+  {
+    category: "Fitur & Cara Kerja",
+    icon: Zap,
+    question: "Bagaimana Contradiction Detector bekerja?",
+    answer:
+      "Contradiction Detector secara otomatis membandingkan isi RUU yang sedang dibahas dengan database janji kampanye. Jika ditemukan inkonsistensi — misalnya politisi berjanji menurunkan pajak tetapi RUU yang didukungnya justru menaikkan pajak — sistem akan menandai kontradiksi tersebut lengkap dengan bukti.",
+  },
+  {
+    category: "Akun & Partisipasi",
+    icon: Users,
+    question: "Apakah harus membuat akun untuk menggunakan RUUMY?",
+    answer:
+      "Tidak harus! Sebagai Guest (tanpa login), kamu sudah bisa melihat dashboard publik dan Promise Radar. Dengan mendaftar sebagai Citizen (cukup email), kamu bisa bookmark janji, menggunakan simulasi dampak RUU, memberikan komentar, dan melakukan voting.",
+  },
+  {
+    category: "Akun & Partisipasi",
+    icon: Users,
+    question: "Apa perbedaan Citizen biasa dan Verified Citizen?",
+    answer:
+      "Citizen biasa (daftar email) bisa bookmark, komentar, dan vote. Verified Citizen (setelah verifikasi KTP) mendapat akses ke fitur Crowd-Verification — yaitu kemampuan mengunggah bukti foto kondisi lapangan dengan validasi GPS/geolokasi. Bukti dari Verified Citizen memiliki bobot validitas lebih tinggi.",
+  },
+  {
+    category: "Data & Keamanan",
+    icon: Lock,
+    question: "Apakah data pribadi saya aman?",
+    answer:
+      "Keamanan data adalah prioritas utama. Semua data akun dilindungi dengan enkripsi standar industri. Password di-hash, session menggunakan JWT Token, dan semua input divalidasi oleh Zod untuk mencegah injeksi data berbahaya. Data KTP hanya digunakan untuk proses verifikasi.",
+  },
+  {
+    category: "Data & Keamanan",
+    icon: Globe,
+    question: "Dari mana sumber data yang digunakan RUUMY?",
+    answer:
+      "Data RUUMY berasal dari: (1) Rekaman janji dari debat, pidato, dan media sosial terverifikasi, (2) Dokumen RUU/UU resmi dari DPR RI, (3) Data statistik dari BPS, APBN, dan lembaga pemerintah, (4) Laporan warga terverifikasi melalui Crowd-Verification. Semua data melalui proses cross-check.",
+  },
+];
+
+const faqCategories = [
+  { name: "Semua", icon: HelpCircle },
+  { name: "Tentang RUUMY", icon: Globe },
+  { name: "Fitur & Cara Kerja", icon: Zap },
+  { name: "Akun & Partisipasi", icon: Users },
+  { name: "Data & Keamanan", icon: Lock },
+];
+
+/* ─── Accordion Item Component ─── */
+function FAQAccordionItem({
+  item,
+  isOpen,
+  onToggle,
+  index,
+}: {
+  item: FAQItem;
+  isOpen: boolean;
+  onToggle: () => void;
+  index: number;
+}) {
+  const Icon = item.icon;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+    >
+      <div
+        className={`group glass-panel rounded-2xl overflow-hidden transition-all duration-500 ${
+          isOpen
+            ? "border-primary/30 shadow-[0_0_40px_-10px_rgba(45,212,191,0.15)]"
+            : "hover:border-white/10 hover:bg-white/[0.03]"
+        }`}
+      >
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center gap-4 p-5 md:p-6 text-left cursor-pointer"
+          id={`faq-q-${index}`}
+          aria-expanded={isOpen}
+          aria-controls={`faq-a-${index}`}
+        >
+          <div
+            className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-500 ${
+              isOpen
+                ? "bg-primary/20 border border-primary/40"
+                : "bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/20"
+            }`}
+          >
+            <Icon
+              className={`w-4 h-4 md:w-5 md:h-5 transition-colors duration-300 ${
+                isOpen ? "text-primary" : "text-white/60 group-hover:text-primary"
+              }`}
+            />
+          </div>
+          <span
+            className={`flex-1 font-semibold text-base md:text-lg transition-colors duration-300 ${
+              isOpen ? "text-white" : "text-white/80 group-hover:text-white"
+            }`}
+          >
+            {item.question}
+          </span>
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="shrink-0"
+          >
+            <ChevronDown
+              className={`w-5 h-5 transition-colors duration-300 ${
+                isOpen ? "text-primary" : "text-white/40"
+              }`}
+            />
+          </motion.div>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              id={`faq-a-${index}`}
+              role="region"
+              aria-labelledby={`faq-q-${index}`}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+              className="overflow-hidden"
+            >
+              <div className="px-5 pb-5 md:px-6 md:pb-6 pl-[4.25rem] md:pl-[5.5rem]">
+                <div className="relative">
+                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary/60 via-primary/20 to-transparent rounded-full" />
+                  <p className="text-muted-foreground leading-relaxed pl-5 text-sm md:text-[15px]">
+                    {item.answer}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Main Page Component ─── */
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const [openFAQs, setOpenFAQs] = useState<Set<number>>(new Set([0]));
+  const [faqCategory, setFaqCategory] = useState("Semua");
+
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <div className="min-h-screen bg-background" />;
+
+  const filteredFAQs =
+    faqCategory === "Semua"
+      ? faqData
+      : faqData.filter((item) => item.category === faqCategory);
+
+  const toggleFAQ = (index: number) => {
+    setOpenFAQs((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -39,6 +263,7 @@ export default function Home() {
               { label: "Politisi", href: "/politicians" },
               { label: "Promise Radar", href: "/promise-radar" },
               { label: "Dashboard", href: "/dashboard" },
+              { label: "FAQ", href: "#faq" },
             ].map((item) => (
               <Link key={item.label} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-white transition-colors relative after:absolute after:bottom-[-24px] after:left-0 after:h-[2px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left">
                 {item.label}
@@ -61,7 +286,7 @@ export default function Home() {
       </nav>
 
       <main className="relative z-10">
-        {/* Hero Section */}
+        {/* ═══════════════════ Hero Section ═══════════════════ */}
         <section className="pt-40 pb-32 px-4">
           <div className="container mx-auto text-center max-w-5xl">
             <motion.div
@@ -125,7 +350,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Feature Grid */}
+        {/* ═══════════════════ Feature Grid ═══════════════════ */}
         <section className="py-24 relative">
           <div className="container mx-auto px-4">
             <div className="mb-16 md:flex justify-between items-end">
@@ -208,7 +433,94 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* ═══════════════════ FAQ Section ═══════════════════ */}
+        <section id="faq" className="py-24 relative scroll-mt-24">
+          {/* Subtle section divider glow */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
+          <div className="container mx-auto px-4 max-w-4xl">
+            {/* Section Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-14"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 text-primary text-sm font-medium mb-6">
+                <HelpCircle className="w-4 h-4" />
+                Pusat Bantuan
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold mb-5">
+                Pertanyaan yang <span className="text-gradient">Sering Ditanyakan</span>
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Punya pertanyaan tentang RUUMY? Temukan jawaban lengkap tentang cara kerja platform, fitur-fitur utama, dan bagaimana kamu bisa berkontribusi.
+              </p>
+            </motion.div>
+
+            {/* Category Filter */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="flex flex-wrap justify-center gap-2.5 mb-10"
+            >
+              {faqCategories.map((cat) => {
+                const CatIcon = cat.icon;
+                const isActive = faqCategory === cat.name;
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() => {
+                      setFaqCategory(cat.name);
+                      setOpenFAQs(new Set());
+                    }}
+                    id={`faq-cat-${cat.name.replace(/\s+/g, "-").toLowerCase()}`}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
+                      isActive
+                        ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_20px_-5px_rgba(45,212,191,0.3)]"
+                        : "bg-white/[0.03] text-muted-foreground border border-white/[0.06] hover:bg-white/[0.06] hover:text-white hover:border-white/10"
+                    }`}
+                  >
+                    <CatIcon className="w-3.5 h-3.5" />
+                    {cat.name}
+                  </button>
+                );
+              })}
+            </motion.div>
+
+            {/* FAQ Items */}
+            <div className="space-y-3">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={faqCategory}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-3"
+                >
+                  {filteredFAQs.map((item, index) => {
+                    const globalIndex = faqData.indexOf(item);
+                    return (
+                      <FAQAccordionItem
+                        key={`${faqCategory}-${globalIndex}`}
+                        item={item}
+                        isOpen={openFAQs.has(globalIndex)}
+                        onToggle={() => toggleFAQ(globalIndex)}
+                        index={index}
+                      />
+                    );
+                  })}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════ CTA Section ═══════════════════ */}
         <section className="py-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-primary/5 border-t border-primary/10" />
           <div className="blob-bg bg-primary/30 w-[500px] h-[500px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] opacity-50 mix-blend-screen" />
@@ -263,7 +575,7 @@ export default function Home() {
               <h4 className="text-white font-semibold mb-4">Organisasi</h4>
               <ul className="space-y-2">
                 <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Tentang Kami</Link></li>
-                <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Laporan Transparansi</Link></li>
+                <li><Link href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</Link></li>
                 <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">API & Data</Link></li>
                 <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Kontak</Link></li>
               </ul>
