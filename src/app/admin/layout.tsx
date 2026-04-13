@@ -15,6 +15,8 @@ import {
   MessageSquareWarning
 } from "lucide-react";
 
+import { AdminMobileNav } from "./mobile-nav";
+
 export default async function AdminLayout({
   children,
 }: {
@@ -50,7 +52,7 @@ export default async function AdminLayout({
 
       {/* Sidebar */}
       <aside className="w-64 border-r border-red-500/10 bg-background/50 backdrop-blur-xl hidden md:flex flex-col relative z-20">
-        <div className="h-20 flex items-center px-6 border-b border-red-500/10">
+        <div className="h-20 flex items-center px-6 border-b border-red-500/10 shrink-0">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center border border-red-500/20 shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)]">
               <ShieldAlert className="w-4 h-4 text-red-500" />
@@ -61,7 +63,7 @@ export default async function AdminLayout({
           </Link>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
           <div className="text-xs font-semibold text-red-500/80 uppercase tracking-wider mb-4 px-2">Control Center</div>
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -76,9 +78,9 @@ export default async function AdminLayout({
           })}
         </div>
 
-        <div className="p-4 border-t border-red-500/10">
+        <div className="p-4 border-t border-red-500/10 shrink-0">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-red-500/20">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-red-500/20 shrink-0">
               {(session.user.name || "A").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 overflow-hidden">
@@ -98,10 +100,13 @@ export default async function AdminLayout({
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col relative z-10 overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-20 border-b border-red-500/10 bg-background/50 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <h1 className="text-lg font-bold text-white flex items-center gap-2">
-              System Administrator <span className="px-2 py-0.5 rounded text-[10px] uppercase bg-red-500/20 text-red-400 border border-red-500/30">Secure</span>
+        <header className="h-20 border-b border-red-500/10 bg-background/50 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 shrink-0">
+          <div className="flex items-center text-muted-foreground">
+            <AdminMobileNav session={session} userRole={userRole} />
+            <h1 className="text-lg font-bold text-white flex items-center gap-2 ml-2 md:ml-0">
+              <span className="hidden sm:inline">System Administrator</span>
+              <span className="sm:hidden">Admin</span>
+              <span className="px-2 py-0.5 rounded text-[10px] uppercase bg-red-500/20 text-red-400 border border-red-500/30">Secure</span>
             </h1>
           </div>
           <div className="flex items-center gap-4">

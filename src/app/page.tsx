@@ -18,6 +18,8 @@ import {
   Zap,
   Lock,
   Globe,
+  Menu,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -218,6 +220,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [openFAQs, setOpenFAQs] = useState<Set<number>>(new Set([0]));
   const [faqCategory, setFaqCategory] = useState("Semua");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -270,19 +273,66 @@ export default function Home() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link href="/login">
               <Button variant="ghost" className="hidden md:flex text-muted-foreground hover:text-white">
                 Masuk
               </Button>
             </Link>
             <Link href="/register">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(45,212,191,0.5)]">
-                Daftar <ArrowRight className="ml-2 w-4 h-4" />
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(45,212,191,0.5)] h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm">
+                Daftar <ArrowRight className="ml-1 sm:ml-2 w-3 sm:w-4 h-3 sm:h-4" />
               </Button>
             </Link>
+            {/* Mobile Menu Toggle */}
+            <button
+              className="md:hidden p-2 flex items-center justify-center text-white/80 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="md:hidden absolute top-20 left-0 w-full bg-[#0a0a0b]/98 backdrop-blur-3xl border-b border-white/10 shadow-2xl overflow-hidden"
+            >
+              <div className="flex flex-col p-6 gap-2">
+                {[
+                  { label: "RUU Watch", href: "/ruu-watch" },
+                  { label: "Database Janji", href: "/database" },
+                  { label: "Politisi", href: "/politicians" },
+                  { label: "Promise Radar", href: "/promise-radar" },
+                  { label: "Dashboard", href: "/dashboard" },
+                  { label: "FAQ", href: "#faq" },
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-base font-medium text-muted-foreground hover:text-white hover:bg-white/5 transition-colors py-3 px-4 rounded-lg"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                
+                <div className="h-px bg-white/10 my-4 mx-2" />
+                
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="mx-2">
+                  <Button variant="outline" className="w-full justify-center border-white/10 bg-white/5 hover:bg-white/10 text-white hover:text-white">
+                    Masuk Akun
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <main className="relative z-10">

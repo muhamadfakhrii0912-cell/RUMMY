@@ -16,6 +16,7 @@ import {
   Users,
   Target
 } from "lucide-react";
+import { MobileNav } from "./mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -51,9 +52,9 @@ export default async function DashboardLayout({
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full mix-blend-screen filter blur-[100px]" />
       </div>
 
-      {/* Sidebar */}
+      {/* Sidebar Desktop */}
       <aside className="w-64 border-r border-white/10 bg-background/50 backdrop-blur-xl hidden md:flex flex-col relative z-20">
-        <div className="h-20 flex items-center px-6 border-b border-white/10">
+        <div className="h-20 flex items-center px-6 border-b border-white/10 shrink-0">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary/50 transition-colors">
               <ShieldAlert className="w-4 h-4 text-primary" />
@@ -64,7 +65,7 @@ export default async function DashboardLayout({
           </Link>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-2">Menu Warga</div>
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -105,9 +106,9 @@ export default async function DashboardLayout({
           ) : null}
         </div>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 shrink-0">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 shrink-0">
               {(session.user.name || "U").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 overflow-hidden">
@@ -125,9 +126,10 @@ export default async function DashboardLayout({
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col relative z-10 overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-20 border-b border-white/10 bg-background/50 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <h1 className="text-lg font-semibold text-white">Dashboard Citizen</h1>
+        <header className="h-20 border-b border-white/10 bg-background/50 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 shrink-0">
+          <div className="flex items-center text-muted-foreground">
+            <MobileNav session={session} />
+            <h1 className="text-lg font-semibold text-white ml-2 md:ml-0">Dashboard Citizen</h1>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative hidden md:block">
@@ -138,7 +140,7 @@ export default async function DashboardLayout({
                 className="w-64 bg-white/5 border border-white/10 rounded-full py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-muted-foreground/50"
               />
             </div>
-            <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-white hover:bg-white/10 transition-all relative">
+            <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-white hover:bg-white/10 transition-all relative shrink-0">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary animate-pulse"></span>
             </button>
