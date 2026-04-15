@@ -58,15 +58,15 @@ export function AdminMobileNav({ session, userRole }: { session: any, userRole: 
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-            className="fixed inset-y-0 left-0 w-[280px] bg-[#0a0a0b] border-r border-red-500/10 shadow-[5px_0_30px_-5px_rgba(239,68,68,0.2)] z-[9999] flex flex-col md:hidden"
+            className="fixed inset-y-0 left-0 w-[280px] bg-[#0a0a0b] border-r border-primary/10 shadow-[5px_0_30px_-5px_rgba(100,116,139,0.2)] z-[9999] flex flex-col md:hidden"
           >
-            <div className="h-20 flex items-center justify-between px-6 border-b border-red-500/10 shrink-0">
+            <div className="h-20 flex items-center justify-between px-6 border-b border-primary/10 shrink-0">
               <Link href="/" className="flex items-center gap-2 group" onClick={handleToggle}>
-                <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center border border-red-500/20 shadow-[0_0_15px_-3px_rgba(239,68,68,0.3)]">
-                  <ShieldAlert className="w-4 h-4 text-red-500" />
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_15px_-3px_rgba(100,116,139,0.3)]">
+                  <ShieldAlert className="w-4 h-4 text-primary" />
                 </div>
                 <span className="text-xl font-bold tracking-tight text-white">
-                  RUUMY<span className="text-red-500">.</span>
+                  RUUMY<span className="text-primary">.</span>
                 </span>
               </Link>
               <button
@@ -78,7 +78,7 @@ export function AdminMobileNav({ session, userRole }: { session: any, userRole: 
             </div>
 
             <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
-              <div className="text-xs font-semibold text-red-500/80 uppercase tracking-wider mb-4 px-2">Control Center</div>
+              <div className="text-xs font-semibold text-primary/80 uppercase tracking-wider mb-4 px-2">Control Center</div>
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 const isActive = pathname === link.href;
@@ -87,7 +87,7 @@ export function AdminMobileNav({ session, userRole }: { session: any, userRole: 
                     <div
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                         isActive
-                          ? "bg-red-500/20 text-red-400 border-transparent"
+                          ? "bg-primary/20 text-primary border-transparent"
                           : "text-muted-foreground hover:text-white hover:bg-white/5"
                       }`}
                     >
@@ -99,14 +99,14 @@ export function AdminMobileNav({ session, userRole }: { session: any, userRole: 
               })}
             </div>
 
-            <div className="p-4 border-t border-red-500/10 shrink-0">
+            <div className="p-4 border-t border-primary/10 shrink-0">
               <div className="flex items-center gap-3 px-3 py-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg shadow-red-500/20 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-slate-400 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 shrink-0">
                   {(session?.user?.name || "A").charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 overflow-hidden">
                   <div className="text-sm font-medium text-white truncate">{session?.user?.name}</div>
-                  <div className="text-[10px] font-bold text-red-400 uppercase tracking-wider">{userRole}</div>
+                  <div className="text-[10px] font-bold text-primary uppercase tracking-wider">{userRole}</div>
                 </div>
               </div>
               <Link href="/dashboard" className="mt-4 flex items-center justify-center gap-2 p-2 rounded border border-white/10 text-muted-foreground hover:text-white hover:bg-white/5 transition-all w-full text-sm" onClick={handleToggle}>

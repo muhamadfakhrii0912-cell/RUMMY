@@ -16,7 +16,7 @@ export default async function AdminPromisesPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-          <Database className="w-8 h-8 text-red-500" /> Database Janji (CRUD)
+          <Database className="w-8 h-8 text-primary" /> Database Janji (CRUD)
         </h1>
         <p className="text-muted-foreground mt-2">
           Kelola data janji politik. Perubahan status di sini otomatis kalkulasi ulang Truth Score politisi.
@@ -63,7 +63,7 @@ export default async function AdminPromisesPage() {
             </select>
           </div>
           <div className="md:col-span-2 mt-2">
-            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 px-6 rounded-lg transition-colors">
+            <button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 px-6 rounded-lg transition-colors">
               Simpan Janji
             </button>
           </div>

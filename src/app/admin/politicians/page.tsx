@@ -14,7 +14,7 @@ export default async function AdminPoliticiansPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-          <Users className="w-8 h-8 text-red-500" /> Database Politisi
+          <Users className="w-8 h-8 text-primary" /> Database Politisi
         </h1>
       </div>
 
@@ -38,7 +38,7 @@ export default async function AdminPoliticiansPage() {
             <textarea name="bio" rows={3} className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white resize-none"></textarea>
           </div>
           <div className="md:col-span-2 mt-2">
-            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 px-6 rounded-lg transition-colors">
+            <button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 px-6 rounded-lg transition-colors">
               Simpan Politisi
             </button>
           </div>
@@ -49,7 +49,7 @@ export default async function AdminPoliticiansPage() {
         {politicians.map((pol) => (
           <div key={pol.id} className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col">
             <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-red-600/30 to-purple-600/30 flex items-center justify-center text-white text-xl font-bold">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary/30 to-slate-400/30 flex items-center justify-center text-white text-xl font-bold">
                 {pol.name.charAt(0)}
               </div>
               <form action={async () => {

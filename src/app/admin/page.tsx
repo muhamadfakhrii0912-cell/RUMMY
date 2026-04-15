@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
           <h2 className="text-3xl font-bold text-white mb-1">Command Center</h2>
           <p className="text-muted-foreground">Sistem pengawasan terpusat platform RUUMY.</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 font-medium text-sm">
+        <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg text-primary font-medium text-sm">
           <Activity className="w-4 h-4 animate-pulse" /> Live System Monitor
         </div>
       </div>
@@ -81,17 +81,17 @@ export default async function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-red-500/20 bg-red-500/5 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-red-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        <Card className="border-primary/20 bg-primary/5 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
           <CardContent className="p-6 relative z-10">
             <div className="flex justify-between items-start mb-4">
-              <div className="w-12 h-12 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-500">
+              <div className="w-12 h-12 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center text-primary">
                 <AlertTriangle className="w-6 h-6 animate-pulse" />
               </div>
-              {pendingVerifications > 0 && <span className="text-xs font-bold text-red-500 bg-red-500/20 px-2 py-1 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]">URGENT</span>}
+              {pendingVerifications > 0 && <span className="text-xs font-bold text-primary bg-primary/20 px-2 py-1 rounded-full shadow-[0_0_10px_rgba(100,116,139,0.5)]">URGENT</span>}
             </div>
             <div className="text-3xl font-bold text-white mb-1">{pendingVerifications}</div>
-            <div className="text-sm font-medium text-red-400">Verifikasi Menunggu Review</div>
+            <div className="text-sm font-medium text-primary">Verifikasi Menunggu Review</div>
           </CardContent>
         </Card>
       </div>
@@ -160,7 +160,7 @@ export default async function AdminDashboard() {
                     </div>
                     <div className="flex flex-col items-end gap-1">
                       <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
-                        user.role === 'ADMIN' ? 'bg-red-500/20 text-red-500 border border-red-500/30' : 
+                        user.role === 'ADMIN' ? 'bg-primary/20 text-primary border border-primary/30' : 
                         user.role === 'JOURNALIST' ? 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' : 
                         'bg-white/5 text-muted-foreground'
                       }`}>

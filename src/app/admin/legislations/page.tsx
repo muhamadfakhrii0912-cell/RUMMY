@@ -36,7 +36,7 @@ export default async function AdminLegislationsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-          <FileText className="w-8 h-8 text-red-500" /> Kelola RUU / Legislation
+          <FileText className="w-8 h-8 text-primary" /> Kelola RUU / Legislation
         </h1>
         <p className="text-muted-foreground mt-2">
           Tambah, lihat, dan hapus data Rancangan Undang-Undang yang dipantau platform.
@@ -100,7 +100,7 @@ export default async function AdminLegislationsPage() {
           <div className="md:col-span-2 mt-2">
             <button
               type="submit"
-              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 px-6 rounded-lg transition-colors"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 px-6 rounded-lg transition-colors"
             >
               Simpan RUU
             </button>
