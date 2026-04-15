@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { FileText, Trash2, Plus } from "lucide-react";
 
+const inputCls = "w-full bg-background border border-border rounded-lg p-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-all";
+
 async function createLegislation(data: FormData) {
   "use server";
   await prisma.legislation.create({
@@ -35,7 +37,7 @@ export default async function AdminLegislationsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <FileText className="w-8 h-8 text-primary" /> Kelola RUU / Legislation
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -44,8 +46,8 @@ export default async function AdminLegislationsPage() {
       </div>
 
       {/* Create Form */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
           <Plus className="w-5 h-5" /> Tambah RUU Baru
         </h2>
         <form action={createLegislation} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -56,7 +58,7 @@ export default async function AdminLegislationsPage() {
               name="title"
               required
               placeholder="Contoh: RUU Perlindungan Data Pribadi"
-              className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white"
+              className={inputCls}
             />
           </div>
           <div className="space-y-2">
@@ -65,12 +67,12 @@ export default async function AdminLegislationsPage() {
               type="text"
               name="number"
               placeholder="Contoh: RUU/2026/001"
-              className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white"
+              className={inputCls}
             />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">Tipe</label>
-            <select name="type" required className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white">
+            <select name="type" required className={inputCls}>
               <option value="RUU">RUU</option>
               <option value="UU">UU (Sudah Disahkan)</option>
               <option value="Perppu">Perppu</option>
@@ -79,7 +81,7 @@ export default async function AdminLegislationsPage() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">Status</label>
-            <select name="status" required className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white">
+            <select name="status" required className={inputCls}>
               <option value="Inisiatif DPR">Inisiatif DPR</option>
               <option value="Pembahasan DPR">Pembahasan DPR</option>
               <option value="Menunggu Pengesahan">Menunggu Pengesahan</option>
@@ -94,7 +96,7 @@ export default async function AdminLegislationsPage() {
               required
               rows={4}
               placeholder="Jelaskan inti dari RUU ini, pasal-pasal penting, dan dampak yang diharapkan..."
-              className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white resize-none"
+              className={`${inputCls} resize-none`}
             ></textarea>
           </div>
           <div className="md:col-span-2 mt-2">
@@ -111,19 +113,19 @@ export default async function AdminLegislationsPage() {
       {/* List */}
       <div className="space-y-4">
         {legislations.map((ruu) => (
-          <div key={ruu.id} className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-start justify-between gap-4">
+          <div key={ruu.id} className="bg-card border border-border rounded-xl p-5 flex items-start justify-between gap-4 shadow-sm hover:border-primary/30 transition-colors">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
-                  ruu.status === "Disahkan" ? "bg-green-500/20 text-green-400" :
-                  ruu.status === "Ditolak" ? "bg-red-500/20 text-red-400" :
-                  "bg-yellow-500/20 text-yellow-400"
+                  ruu.status === "Disahkan" ? "bg-green-500/20 text-green-500 border border-green-500/20" :
+                  ruu.status === "Ditolak" ? "bg-red-500/20 text-red-500 border border-red-500/20" :
+                  "bg-yellow-500/20 text-yellow-500 border border-yellow-500/20"
                 }`}>
                   {ruu.status}
                 </span>
                 <span className="text-[10px] text-muted-foreground font-mono">{ruu.number}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-1">{ruu.title}</h3>
+              <h3 className="text-lg font-bold text-foreground mb-1">{ruu.title}</h3>
               <p className="text-sm text-muted-foreground line-clamp-2">{ruu.description}</p>
               <div className="flex gap-4 mt-3 text-xs text-muted-foreground">
                 <span>🔗 {ruu._count.promises} relasi janji</span>
@@ -135,7 +137,7 @@ export default async function AdminLegislationsPage() {
               "use server";
               await deleteLegislation(ruu.id);
             }}>
-              <button type="submit" className="text-red-400 hover:text-red-300 bg-red-500/10 p-2 rounded-lg shrink-0">
+              <button type="submit" className="text-red-400 hover:text-red-300 bg-red-500/10 p-2 rounded-lg shrink-0 transition-colors">
                 <Trash2 className="w-4 h-4" />
               </button>
             </form>

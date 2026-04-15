@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { createPromise, deletePromise, changePromiseStatus } from "../actions";
-import { Database, Trash2, Edit } from "lucide-react";
+import { Database, Trash2 } from "lucide-react";
+
+// Shared semantic input class
+const inputCls = "w-full bg-background border border-border rounded-lg p-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 transition-all";
 
 export default async function AdminPromisesPage() {
   const promises = await prisma.promise.findMany({
@@ -15,7 +18,7 @@ export default async function AdminPromisesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <Database className="w-8 h-8 text-primary" /> Database Janji (CRUD)
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -24,12 +27,12 @@ export default async function AdminPromisesPage() {
       </div>
 
       {/* Create Form */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-        <h2 className="text-xl font-bold text-white mb-4">Tambah Janji Baru</h2>
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-foreground mb-4">Tambah Janji Baru</h2>
         <form action={createPromise} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">Pilih Politisi</label>
-            <select name="politicianId" required className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white">
+            <select name="politicianId" required className={inputCls}>
               {politicians.map(p => (
                 <option key={p.id} value={p.id}>{p.name} - {p.position}</option>
               ))}
@@ -37,7 +40,7 @@ export default async function AdminPromisesPage() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">Kategori</label>
-            <select name="category" required className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white">
+            <select name="category" required className={inputCls}>
               <option value="Infrastruktur">Infrastruktur</option>
               <option value="Ekonomi">Ekonomi</option>
               <option value="Kesehatan">Kesehatan</option>
@@ -47,15 +50,15 @@ export default async function AdminPromisesPage() {
           </div>
           <div className="space-y-2 md:col-span-2">
             <label className="text-sm font-medium text-muted-foreground">Judul Janji / Tagline</label>
-            <input type="text" name="title" required placeholder="Contoh: Pembangunan MRT..." className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white" />
+            <input type="text" name="title" required placeholder="Contoh: Pembangunan MRT..." className={inputCls} />
           </div>
           <div className="space-y-2 md:col-span-2">
             <label className="text-sm font-medium text-muted-foreground">Deskripsi Detail</label>
-            <textarea name="description" required rows={3} className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white resize-none" placeholder="Deskripsi..."></textarea>
+            <textarea name="description" required rows={3} className={`${inputCls} resize-none`} placeholder="Deskripsi..."></textarea>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-muted-foreground">Status Awal</label>
-            <select name="status" className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white">
+            <select name="status" className={inputCls}>
               <option value="PENDING">PENDING</option>
               <option value="ON_TRACK">ON_TRACK</option>
               <option value="FULFILLED">FULFILLED</option>
@@ -71,23 +74,23 @@ export default async function AdminPromisesPage() {
       </div>
 
       {/* List */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-muted-foreground">
-            <thead className="bg-white/5 text-xs uppercase text-muted-foreground">
+            <thead className="bg-secondary text-xs uppercase text-muted-foreground border-b border-border">
               <tr>
-                <th className="px-6 py-4 font-medium text-white">Politisi</th>
-                <th className="px-6 py-4 font-medium text-white">Judul Janji</th>
-                <th className="px-6 py-4 font-medium text-white">Status</th>
-                <th className="px-6 py-4 font-medium text-white text-right">Aksi</th>
+                <th className="px-6 py-4 font-semibold text-foreground">Politisi</th>
+                <th className="px-6 py-4 font-semibold text-foreground">Judul Janji</th>
+                <th className="px-6 py-4 font-semibold text-foreground">Status</th>
+                <th className="px-6 py-4 font-semibold text-foreground text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody className="divide-y divide-border">
               {promises.map((promise) => (
-                <tr key={promise.id} className="hover:bg-white/5">
-                  <td className="px-6 py-4 font-medium text-white">{promise.politician.name}</td>
+                <tr key={promise.id} className="hover:bg-secondary/50 transition-colors">
+                  <td className="px-6 py-4 font-medium text-foreground">{promise.politician.name}</td>
                   <td className="px-6 py-4">
-                    <div className="line-clamp-1 font-medium">{promise.title}</div>
+                    <div className="line-clamp-1 font-medium text-foreground">{promise.title}</div>
                     <div className="text-[10px] uppercase text-red-400 mt-1">{promise.category}</div>
                   </td>
                   <td className="px-6 py-4">
@@ -98,7 +101,7 @@ export default async function AdminPromisesPage() {
                       <select 
                         name="status" 
                         defaultValue={promise.status} 
-                        className="bg-background border border-white/10 rounded p-1 text-xs text-white"
+                        className="bg-background border border-border rounded p-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
                       >
                         <option value="PENDING">PENDING</option>
                         <option value="ON_TRACK">ON_TRACK</option>
@@ -106,7 +109,7 @@ export default async function AdminPromisesPage() {
                         <option value="FAILED">FAILED</option>
                         <option value="CONTRADICTED">CONTRADICTED</option>
                       </select>
-                      <button type="submit" className="text-[10px] font-bold bg-white/10 hover:bg-white/20 px-2 py-1 rounded">Simpan</button>
+                      <button type="submit" className="text-[10px] font-bold bg-primary/10 hover:bg-primary/20 text-primary px-2 py-1 rounded border border-primary/20 transition-colors">Simpan</button>
                     </form>
                   </td>
                   <td className="px-6 py-4 text-right">
