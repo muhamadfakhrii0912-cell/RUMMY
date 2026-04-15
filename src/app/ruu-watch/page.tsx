@@ -7,11 +7,12 @@ function getStatusStyle(status: string) {
     case "DISAHKAN": return { bg: "bg-green-500/10", text: "text-green-400", icon: CheckCircle };
     case "PEMBAHASAN": return { bg: "bg-yellow-500/10", text: "text-yellow-400", icon: Clock };
     case "INISIATIF_DPR": return { bg: "bg-blue-500/10", text: "text-blue-400", icon: FileText };
-    default: return { bg: "bg-white/10", text: "text-white", icon: FileText };
+    default: return { bg: "bg-secondary", text: "text-foreground", icon: FileText };
   }
 }
 
 import { SearchBar } from "@/components/ui/search-bar";
+import { BackButton } from "@/components/ui/back-button";
 
 export default async function RuuWatchPage({
   searchParams,
@@ -37,8 +38,9 @@ export default async function RuuWatchPage({
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-white/10 bg-background/50 backdrop-blur-xl">
+      <div className="border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 pt-28 pb-12">
+          <BackButton className="mb-6" />
           <div className="flex items-center gap-3 mb-4">
             <div className="px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full flex items-center gap-2">
               <span className="relative flex h-2 w-2">
@@ -48,12 +50,12 @@ export default async function RuuWatchPage({
               <span className="text-xs font-semibold text-red-400">Live Monitoring</span>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight mb-4">
             RUU <span className="text-gradient">Watch</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mb-6">
             Pantau dan pahami Rancangan Undang-Undang yang sedang dibahas di DPR. 
-            Klik salah satu untuk melihat <strong className="text-white">dampaknya terhadap kehidupan Anda</strong>.
+            Klik salah satu untuk melihat <strong className="text-foreground">dampaknya terhadap kehidupan Anda</strong>.
           </p>
           <SearchBar placeholder="Cari RUU, nomor, atau topik pembahasan..." />
         </div>
@@ -74,7 +76,7 @@ export default async function RuuWatchPage({
               const StatusIcon = style.icon;
               return (
                 <Link key={ruu.id} href={`/ruu-watch/${ruu.id}`}>
-                  <div className="group relative bg-white/[0.03] border border-white/10 rounded-2xl p-6 md:p-8 transition-all hover:bg-white/[0.06] hover:border-primary/40 hover:shadow-[0_0_40px_-15px_rgba(45,212,191,0.15)] cursor-pointer overflow-hidden">
+                  <div className="group relative bg-card border border-border rounded-2xl p-6 md:p-8 transition-all hover:bg-secondary/50 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 cursor-pointer overflow-hidden shadow-sm">
                     {/* Glow */}
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
                       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-primary/5 rounded-full blur-[80px]" />
@@ -82,7 +84,7 @@ export default async function RuuWatchPage({
                     
                     <div className="relative z-10 flex flex-col md:flex-row gap-6">
                       {/* Left: Number */}
-                      <div className="shrink-0 w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl font-black text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-all">
+                      <div className="shrink-0 w-16 h-16 rounded-2xl bg-secondary border border-border flex items-center justify-center text-2xl font-black text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-all">
                         {String(i + 1).padStart(2, "0")}
                       </div>
                       
@@ -95,7 +97,7 @@ export default async function RuuWatchPage({
                           <span className="text-xs text-muted-foreground font-mono">{ruu.number || ruu.type}</span>
                         </div>
                         
-                        <h2 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                        <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                           {ruu.title}
                         </h2>
                         <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
@@ -110,7 +112,7 @@ export default async function RuuWatchPage({
                       
                       {/* Right: Arrow */}
                       <div className="hidden md:flex items-center">
-                        <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 group-hover:bg-primary/10 transition-all">
+                        <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center group-hover:border-primary/50 group-hover:bg-primary/10 transition-all">
                           <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                       </div>

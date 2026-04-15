@@ -1,8 +1,8 @@
 # 📄 Product Requirements Document (PRD): RUUMY 2.0
 
 **Project Name:** RUUMY 2.0 - Democratic Accountability Engine  
-**Document Version:** 2.0 (Updated — Synced with Codebase)  
-**Last Updated:** April 2026
+**Document Version:** 2.1 (Final — Competition Ready)  
+**Last Updated:** 13 April 2026
 
 ---
 
@@ -115,19 +115,52 @@ Panel kontrol penuh untuk pihak admin, mencakup:
 - Manajemen Legislasi/RUU (`/admin/legislations`)
 - Kanban Verifikasi Laporan Warga (`/admin/verifications`)
 
+### 3.13 Real-time Statistics API ✅ Implemented
+API endpoint yang menyajikan data statistik langsung dari database (bukan hardcode) ke Landing Page. Menampilkan jumlah janji, RUU, dan politisi secara real-time.
+- *API:* `/api/stats`
+- *Konsumer:* Landing Page hero section
+
+### 3.14 Comment Voting System ✅ Implemented
+Sistem upvote/downvote pada setiap komentar warga. Memungkinkan komunitas menentukan relevansi opini secara demokratis.
+- *API:* `/api/comments/vote`
+
+### 3.15 Detail Page — Janji Politik ✅ Implemented
+Halaman detail untuk setiap janji yang menampilkan: info politisi, deskripsi lengkap, hubungan kontradiksi/dukungan terhadap RUU terkait, dan ruang diskusi komentar.
+- *Halaman:* `/database/[id]`
+
+### 3.16 Responsive Public Navbar ✅ Implemented
+Navigasi publik responsif yang menggunakan React Portal untuk mobile menu, menghindari masalah z-index/stacking context. Tersedia di semua halaman publik melalui layout groups.
+- *Komponen:* `PublicNavbar`, `PublicMobileMenu`
+
+### 3.17 Loading Skeletons (UX Polish) ✅ Implemented
+Skeleton loading state untuk 3 halaman utama agar tidak ada blank screen saat data sedang di-fetch dari database.
+- `/database/loading.tsx`
+- `/politicians/loading.tsx`
+- `/ruu-watch/loading.tsx`
+
+### 3.18 Search & Filter ✅ Implemented
+Komponen pencarian reusable (`SearchBar`) yang memungkinkan filter data di halaman Database Janji, Politisi, dan RUU Watch berdasarkan query parameter URL.
+- *Komponen:* `SearchBar` (`src/components/ui/search-bar.tsx`)
+
+### 3.19 Demo Seed Script ✅ Implemented
+Script seeder komprehensif untuk mengisi database dengan data realistis (5 politisi, 10 janji, 4 RUU, relasi kontradiksi, komentar dummy) untuk kebutuhan presentasi.
+- *Script:* `scripts/seed-demo.js`
+
 ---
 
 ## 4. Halaman & Rute Aplikasi
 
 | Route | Deskripsi | Akses |
 |---|---|---|
-| `/` | Landing page + FAQ section terintegrasi | Public |
+| `/` | Landing page + FAQ section + Stats real-time | Public |
 | `/login` | Halaman masuk akun | Public |
 | `/register` | Halaman daftar akun baru | Public |
-| `/politicians` | Daftar semua politisi | Public |
+| `/politicians` | Daftar semua politisi + search | Public |
 | `/politicians/[id]` | Profil & rekam jejak janji politisi | Public |
-| `/database` | Database janji politik publik | Public |
-| `/ruu-watch` | Pemantauan RUU/legislasi live | Public |
+| `/database` | Database janji politik publik + search | Public |
+| `/database/[id]` | Detail janji + kontradiksi + komentar | Public |
+| `/ruu-watch` | Pemantauan RUU/legislasi live + search | Public |
+| `/ruu-watch/[id]` | Detail RUU + Impact Simulator AI | Public |
 | `/promise-radar` | Dashboard bubble chart janji | Public |
 | `/dashboard` | Dashboard personal warga (login) | Citizen |
 | `/dashboard/bookmarks` | Daftar bookmark janji | Citizen |
@@ -231,10 +264,12 @@ Langkah 4: Verification Lock — jika lulus, masuk Kanban Admin
 | Method | Route | Fungsi |
 |---|---|---|
 | GET/POST | `/api/auth/[...nextauth]` | Autentikasi NextAuth |
+| GET | `/api/stats` | Statistik real-time untuk Landing Page |
 | POST | `/api/verification` | Submit laporan foto warga |
 | GET/PUT/DELETE | `/api/admin/verifications` | CRUD verifikasi (admin) |
 | GET/POST | `/api/bookmarks` | Manajemen bookmark user |
 | GET/POST/DELETE | `/api/comments` | Komentar pada janji/RUU |
+| POST | `/api/comments/vote` | Upvote/Downvote komentar |
 | POST | `/api/simulate-impact` | Simulasi dampak RUU personal |
 | POST | `/api/uploadthing` | Upload file ke S3 |
 | POST | `/api/seed/*` | Seed data awal (dev only) |
@@ -321,4 +356,29 @@ OPENAI_API_KEY="sk-proj-xxx"
 
 ---
 
-*--- End of Document v2.0 ---*
+## 12. Komponen UI Reusable
+
+| Komponen | Path | Fungsi |
+|---|---|---|
+| `PublicNavbar` | `src/components/ui/public-navbar.tsx` | Navigasi publik responsive (desktop + mobile) |
+| `PublicMobileMenu` | `src/components/ui/public-mobile-menu.tsx` | Mobile menu via React Portal |
+| `SearchBar` | `src/components/ui/search-bar.tsx` | Input pencarian reusable di semua halaman |
+| `BookmarkButton` | `src/app/database/BookmarkButton.tsx` | Toggle bookmark janji |
+| `CommentSection` | `src/components/comments/CommentSection.tsx` | Sistem komentar + voting |
+| `PromiseRadarChart` | `src/components/charts/PromiseRadarChart.tsx` | Bubble chart interaktif Recharts |
+| `ImpactSimulator` | `src/app/ruu-watch/[id]/ImpactSimulator.tsx` | Simulasi dampak RUU per profesi |
+| `MobileNav` | `src/app/dashboard/mobile-nav.tsx` | Menu mobile dashboard (Portal) |
+| `AdminMobileNav` | `src/app/admin/mobile-nav.tsx` | Menu mobile admin panel (Portal) |
+
+---
+
+## 13. Deployment & Live URL
+
+- **Repository:** `https://github.com/muhamadfakhrii0912-cell/RUMMY`
+- **Production URL:** Vercel (auto-deploy dari branch `main`)
+- **Database Production:** Neon PostgreSQL (serverless, cloud-hosted)
+- **CI/CD:** Push ke `main` → Vercel auto-build → Live dalam ~2 menit
+
+---
+
+*--- End of Document v2.1 (Competition Ready) ---*

@@ -32,13 +32,13 @@ export function PromiseRadarChart({ promises }: { promises: any[] }) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="glass-panel p-4 rounded-xl border border-white/20 bg-background/90 backdrop-blur-xl w-64">
+        <div className="glass-panel p-4 rounded-xl border border-border bg-card/90 backdrop-blur-xl w-64 shadow-md">
            <div className={`text-[10px] font-bold px-2 py-1 rounded mb-2 inline-block ${data.status === 'FULFILLED' ? 'bg-green-500/20 text-green-400' : data.status.includes('PENDING') ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
              {data.status}
            </div>
-           <p className="text-sm font-bold text-white mb-1">{data.title}</p>
+           <p className="text-sm font-bold text-foreground mb-1">{data.title}</p>
            <p className="text-xs text-muted-foreground mb-2">Oleh: {data.politician}</p>
-           <div className="text-[10px] text-muted-foreground border-t border-white/10 pt-2">
+           <div className="text-[10px] text-muted-foreground border-t border-border pt-2">
              Kategori: {data.category} | Popularitas: {data.size}
            </div>
         </div>
@@ -48,7 +48,7 @@ export function PromiseRadarChart({ promises }: { promises: any[] }) {
   };
 
   return (
-    <div className="w-full h-[600px] bg-white/[0.02] border border-white/10 rounded-2xl p-6 relative">
+    <div className="w-full h-[600px] bg-card border border-border rounded-2xl p-6 relative shadow-sm">
       {!promises.length ? (
         <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
            Belum ada data untuk dipetakan.
@@ -56,26 +56,26 @@ export function PromiseRadarChart({ promises }: { promises: any[] }) {
       ) : (
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 100 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="currentColor" className="opacity-10" />
             <XAxis 
               type="number" 
               dataKey="date" 
               name="Waktu" 
               tickFormatter={(unixTime) => new Date(unixTime).toLocaleDateString("id-ID", { month: 'short', year: 'numeric' })}
-              stroke="rgba(255,255,255,0.2)"
-              tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+              stroke="currentColor" className="opacity-20"
+              tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
             />
             <YAxis 
               type="number" 
               dataKey="categoryIndex" 
               name="Kategori" 
               tickFormatter={(val) => categories[val] || ""}
-              stroke="rgba(255,255,255,0.2)"
-              tick={{ fill: 'rgba(255,255,255,0.5)', fontSize: 12 }}
+              stroke="currentColor" className="opacity-20"
+              tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
               width={100}
             />
             <ZAxis type="number" dataKey="size" range={[80, 500]} name="Popularity" />
-            <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3', stroke: 'rgba(255,255,255,0.1)' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3', stroke: 'currentColor', opacity: 0.1 }} />
             
             <Scatter name="Promises" data={chartData} onMouseEnter={(e) => setActiveNode(e)} onMouseLeave={() => setActiveNode(null)}>
               {chartData.map((entry, index) => (

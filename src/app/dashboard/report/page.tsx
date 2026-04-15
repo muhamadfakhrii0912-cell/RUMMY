@@ -49,7 +49,7 @@ export default function LaporFaktaPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <ShieldCheck className="w-8 h-8 text-primary" /> Lapor Fakta Lapangan
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -57,21 +57,21 @@ export default function LaporFaktaPage() {
         </p>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-md">
         <form onSubmit={handleSubmit} className="space-y-6">
           
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">1. Unggah Bukti Foto</label>
+            <label className="text-sm font-bold text-foreground">1. Unggah Bukti Foto</label>
             <PhotoUploader onUploadComplete={(data) => setImageUrl(data.url)} />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">2. Judul Laporan</label>
+            <label className="text-sm font-bold text-foreground">2. Judul Laporan</label>
             <input 
               required
               disabled={loading}
               type="text" 
-              className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors focus:ring-1 focus:ring-primary shadow-sm"
               placeholder="Contoh: Jalan Gatot Subroto Berlubang Parah"
               value={formData.title}
               onChange={e => setFormData({ ...formData, title: e.target.value })}
@@ -79,11 +79,11 @@ export default function LaporFaktaPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">3. Deskripsi & Detail</label>
+            <label className="text-sm font-bold text-foreground">3. Deskripsi & Detail</label>
             <textarea 
               required
               disabled={loading}
-              className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white h-32 resize-none focus:outline-none focus:border-primary transition-colors"
+              className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground h-32 resize-none focus:outline-none focus:border-primary transition-colors focus:ring-1 focus:ring-primary shadow-sm"
               placeholder="Ceritakan detail yang Anda saksikan di lapangan..."
               value={formData.description}
               onChange={e => setFormData({ ...formData, description: e.target.value })}

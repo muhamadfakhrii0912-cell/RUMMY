@@ -17,7 +17,7 @@ export default async function DiscussionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <MessageSquare className="w-8 h-8 text-primary" /> Diskusi & Opini Saya
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -27,27 +27,27 @@ export default async function DiscussionsPage() {
 
       <div className="space-y-4">
         {comments.length === 0 ? (
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-12 text-center">
+          <div className="bg-card border border-border rounded-2xl p-12 text-center shadow-md">
              <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
-             <h3 className="text-lg font-bold text-white mb-2">Ruang diskusi masih kosong</h3>
+             <h3 className="text-lg font-bold text-foreground mb-2">Ruang diskusi masih kosong</h3>
              <p className="text-muted-foreground">Anda belum memberikan komentar apapun di platform ini.</p>
           </div>
         ) : (
           comments.map((comment) => (
-            <div key={comment.id} className="bg-white/5 border border-white/10 rounded-xl p-5">
+            <div key={comment.id} className="bg-card border border-border rounded-xl p-5 shadow-sm">
               {comment.promise && (
-                <div className="mb-3 pb-3 border-b border-white/10">
+                <div className="mb-3 pb-3 border-b border-border">
                   <p className="text-xs text-muted-foreground">Mengomentari Janji:</p>
-                  <p className="text-sm font-semibold text-white truncate">{comment.promise.title}</p>
+                  <p className="text-sm font-bold text-foreground truncate">{comment.promise.title}</p>
                 </div>
               )}
-              <p className="text-white text-sm whitespace-pre-wrap">{comment.content}</p>
+              <p className="text-foreground text-sm whitespace-pre-wrap leading-relaxed">{comment.content}</p>
               
               <div className="mt-4 flex items-center gap-4 text-xs font-medium text-muted-foreground">
-                <div className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                <div className="flex items-center gap-1.5 hover:text-foreground cursor-pointer transition-colors">
                   <ThumbsUp className="w-4 h-4" /> {comment.voteUp}
                 </div>
-                <div className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                <div className="flex items-center gap-1.5 hover:text-foreground cursor-pointer transition-colors">
                   <ThumbsDown className="w-4 h-4" /> {comment.voteDown}
                 </div>
                 <div className="ml-auto">

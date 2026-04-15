@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { PromiseRadarChart } from "@/components/charts/PromiseRadarChart";
 import { Activity, ShieldAlert, Target } from "lucide-react";
+import { BackButton } from "@/components/ui/back-button";
 
 export default async function PromiseRadarPage() {
   const promises = await prisma.promise.findMany({
@@ -20,8 +21,9 @@ export default async function PromiseRadarPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="border-b border-white/10 bg-background/50 backdrop-blur-xl">
+      <div className="border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 pt-28 pb-12">
+          <BackButton className="mb-6" />
           <div className="flex items-center gap-3 mb-4">
             <div className="px-3 py-1 bg-primary/10 border border-primary/20 rounded-full flex items-center gap-2">
               <span className="relative flex h-2 w-2">
@@ -31,7 +33,7 @@ export default async function PromiseRadarPage() {
               <span className="text-xs font-semibold text-primary">Live Radar</span>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight mb-4">
             Promise <span className="text-gradient">Radar</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mb-8">
@@ -39,9 +41,9 @@ export default async function PromiseRadarPage() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">
-             <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-                <div className="text-sm text-muted-foreground mb-1">Total Janji</div>
-                <div className="text-2xl font-bold text-white">{stats.total}</div>
+             <div className="p-4 rounded-xl border border-border bg-card shadow-sm">
+                <div className="text-sm font-bold text-muted-foreground mb-1">Total Janji</div>
+                <div className="text-2xl font-black text-foreground">{stats.total}</div>
              </div>
              <div className="p-4 rounded-xl border border-green-500/20 bg-green-500/5">
                 <div className="text-sm text-green-400 mb-1">Ditepati</div>

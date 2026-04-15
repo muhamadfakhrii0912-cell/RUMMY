@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Zap, Loader2, User, Briefcase, GraduationCap, ShoppingBag, Heart, Landmark } from "lucide-react";
 
 const PROFESI_OPTIONS = [
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export function ImpactSimulator({ legislationId, ruuTitle }: Props) {
+  const router = useRouter();
   const [selectedProfesi, setSelectedProfesi] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
@@ -40,6 +42,7 @@ export function ImpactSimulator({ legislationId, ruuTitle }: Props) {
       const data = await res.json();
       if (res.ok) {
         setResult(data.impactResult);
+        router.refresh();
       } else {
         setResult("Error: " + (data.error || "Gagal mensimulasikan dampak."));
       }
@@ -57,8 +60,8 @@ export function ImpactSimulator({ legislationId, ruuTitle }: Props) {
           <Zap className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h3 className="font-bold text-white text-lg">Simulasi Dampak</h3>
-          <p className="text-xs text-muted-foreground">Bagaimana RUU ini mempengaruhi <strong className="text-white">HIDUP Anda</strong>?</p>
+          <h3 className="font-bold text-foreground text-lg">Simulasi Dampak</h3>
+          <p className="text-xs text-muted-foreground">Bagaimana RUU ini mempengaruhi <strong className="text-foreground">HIDUP Anda</strong>?</p>
         </div>
       </div>
 
@@ -77,7 +80,7 @@ export function ImpactSimulator({ legislationId, ruuTitle }: Props) {
                 className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-medium transition-all border ${
                   isSelected
                     ? "bg-primary/20 border-primary/50 text-primary"
-                    : "bg-white/5 border-white/10 text-muted-foreground hover:bg-white/10 hover:text-white"
+                    : "bg-secondary border-border text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -102,7 +105,7 @@ export function ImpactSimulator({ legislationId, ruuTitle }: Props) {
 
       {/* Result */}
       {result && (
-        <div className="bg-background/80 border border-white/10 rounded-xl p-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="bg-card border border-border rounded-xl p-5 animate-in fade-in slide-in-from-bottom-4 duration-500 shadow-sm">
           <h4 className="text-sm font-bold text-primary mb-3 flex items-center gap-2">
             <Zap className="w-4 h-4" /> Hasil Analisis Dampak
           </h4>

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LayoutDashboard, Target, BookOpen, FileText } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function PublicMobileMenu({ session }: { session: any }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,30 +25,34 @@ export function PublicMobileMenu({ session }: { session: any }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-x-0 top-20 bg-[#0a0a0b]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl z-[9999] md:hidden"
+          className="fixed inset-x-0 top-20 bg-background/95 backdrop-blur-xl border-b border-border shadow-2xl z-[9999] md:hidden"
         >
           <div className="px-6 py-8 flex flex-col gap-6">
-            <Link href="/database" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-white transition-colors">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+            <Link href="/database" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center">
                 <BookOpen className="w-5 h-5" />
               </div>
               Database Janji
             </Link>
-            <Link href="/ruu-watch" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-white transition-colors">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+            <Link href="/ruu-watch" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center">
                 <FileText className="w-5 h-5" />
               </div>
               RUU Watch
             </Link>
-            <Link href="/promise-radar" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-white transition-colors">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+            <Link href="/promise-radar" onClick={handleToggle} className="flex items-center gap-4 text-lg font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary/50 flex items-center justify-center">
                 <Target className="w-5 h-5" />
               </div>
               Promise Radar
             </Link>
 
-            <div className="h-px bg-white/10 w-full my-2"></div>
+            <div className="h-px bg-border w-full my-2"></div>
             
+            <div className="flex items-center justify-center">
+              <ThemeToggle />
+            </div>
+
             {session ? (
               <Link href="/dashboard" onClick={handleToggle} className="h-12 flex items-center justify-center rounded-full bg-primary/10 border border-primary/20 text-primary font-medium hover:bg-primary/20 transition-all w-full">
                 <LayoutDashboard className="w-5 h-5 mr-2" />
@@ -68,7 +73,7 @@ export function PublicMobileMenu({ session }: { session: any }) {
     <>
       <button
         onClick={handleToggle}
-        className="md:hidden w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-white transition-all"
+        className="md:hidden w-10 h-10 rounded-full bg-secondary/50 border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-all"
         aria-label="Toggle Menu"
       >
         {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

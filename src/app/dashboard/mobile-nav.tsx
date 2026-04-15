@@ -71,20 +71,20 @@ export function MobileNav({ session }: { session: any }) {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-            className="fixed inset-y-0 left-0 w-[280px] bg-[#0a0a0b] border-r border-white/10 shadow-2xl z-[9999] flex flex-col md:hidden"
+            className="fixed inset-y-0 left-0 w-[280px] bg-background border-r border-border shadow-2xl z-[9999] flex flex-col md:hidden"
           >
-            <div className="h-20 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
+            <div className="h-20 flex items-center justify-between px-6 border-b border-border shrink-0">
               <Link href="/" className="flex items-center gap-2 group" onClick={handleToggle}>
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary/50 transition-colors">
                   <ShieldAlert className="w-4 h-4 text-primary" />
                 </div>
-                <span className="text-xl font-bold tracking-tight text-white">
+                <span className="text-xl font-bold tracking-tight text-foreground">
                   RUUMY<span className="text-primary">.</span>
                 </span>
               </Link>
               <button
                 onClick={handleToggle}
-                className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-muted-foreground hover:text-white"
+                className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -103,7 +103,7 @@ export function MobileNav({ session }: { session: any }) {
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                         isActive
                           ? "bg-primary/20 text-primary border-transparent"
-                          : "text-muted-foreground hover:text-white hover:bg-white/5"
+                          : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -124,8 +124,8 @@ export function MobileNav({ session }: { session: any }) {
                     <div
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                         isActive
-                          ? "bg-blue-400/20 text-blue-400"
-                          : "text-muted-foreground hover:text-white hover:bg-white/5"
+                          ? "bg-primary/20 text-primary border-transparent"
+                          : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                       }`}
                     >
                       <Icon className="w-5 h-5" />
@@ -150,13 +150,13 @@ export function MobileNav({ session }: { session: any }) {
               )}
             </div>
 
-            <div className="p-4 border-t border-white/10 shrink-0">
+            <div className="p-4 border-t border-border shrink-0">
               <div className="flex items-center gap-3 px-3 py-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-slate-400 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 shrink-0">
                   {(session?.user?.name || "U").charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 overflow-hidden">
-                  <div className="text-sm font-medium text-white truncate">
+                  <div className="text-sm font-medium text-foreground truncate">
                     {session?.user?.name || "User"}
                   </div>
                   <div className="text-xs text-muted-foreground truncate">
@@ -183,7 +183,7 @@ export function MobileNav({ session }: { session: any }) {
     <>
       <button
         onClick={handleToggle}
-        className="md:hidden w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-white transition-all mr-3"
+        className="md:hidden w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-all mr-3"
         aria-label="Toggle Navigation"
       >
         <Menu className="w-5 h-5" />

@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 /* ─── FAQ Data ─── */
 interface FAQItem {
@@ -144,7 +145,7 @@ function FAQAccordionItem({
         className={`group glass-panel rounded-2xl overflow-hidden transition-all duration-500 ${
           isOpen
             ? "border-primary/30 shadow-[0_0_40px_-10px_rgba(45,212,191,0.15)]"
-            : "hover:border-white/10 hover:bg-white/[0.03]"
+            : "hover:border-border hover:bg-secondary/30"
         }`}
       >
         <button
@@ -158,18 +159,18 @@ function FAQAccordionItem({
             className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-500 ${
               isOpen
                 ? "bg-primary/20 border border-primary/40"
-                : "bg-white/5 border border-white/10 group-hover:bg-primary/10 group-hover:border-primary/20"
+                : "bg-secondary/50 border border-border group-hover:bg-primary/10 group-hover:border-primary/20"
             }`}
           >
             <Icon
               className={`w-4 h-4 md:w-5 md:h-5 transition-colors duration-300 ${
-                isOpen ? "text-primary" : "text-white/60 group-hover:text-primary"
+                isOpen ? "text-primary" : "text-muted-foreground group-hover:text-primary"
               }`}
             />
           </div>
           <span
             className={`flex-1 font-semibold text-base md:text-lg transition-colors duration-300 ${
-              isOpen ? "text-white" : "text-white/80 group-hover:text-white"
+              isOpen ? "text-foreground" : "text-foreground/80 group-hover:text-foreground"
             }`}
           >
             {item.question}
@@ -181,7 +182,7 @@ function FAQAccordionItem({
           >
             <ChevronDown
               className={`w-5 h-5 transition-colors duration-300 ${
-                isOpen ? "text-primary" : "text-white/40"
+                isOpen ? "text-primary" : "text-muted-foreground/50"
               }`}
             />
           </motion.div>
@@ -270,13 +271,13 @@ export default function Home() {
         <div className="blob-bg bg-blue-500/10 w-[800px] h-[800px] bottom-[-300px] right-[-200px]" style={{ animationDelay: '2s' }} />
       </div>
 
-      <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-background/60 backdrop-blur-xl">
+      <nav className="fixed top-0 w-full z-50 border-b border-border bg-background/60 backdrop-blur-xl">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary/50 transition-colors">
               <Activity className="w-5 h-5 text-primary" />
             </div>
-            <span className="text-2xl font-bold tracking-tight text-white">
+            <span className="text-2xl font-bold tracking-tight text-foreground">
               RUUMY<span className="text-primary">.</span>
             </span>
           </Link>
@@ -289,14 +290,17 @@ export default function Home() {
               { label: "Dashboard", href: "/dashboard" },
               { label: "FAQ", href: "#faq" },
             ].map((item) => (
-              <Link key={item.label} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-white transition-colors relative after:absolute after:bottom-[-24px] after:left-0 after:h-[2px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left">
+              <Link key={item.label} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-[-24px] after:left-0 after:h-[2px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left">
                 {item.label}
               </Link>
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <Link href="/login">
-              <Button variant="ghost" className="hidden md:flex text-muted-foreground hover:text-white">
+              <Button variant="ghost" className="hidden md:flex text-muted-foreground hover:text-foreground">
                 Masuk
               </Button>
             </Link>
@@ -307,7 +311,7 @@ export default function Home() {
             </Link>
             {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden p-2 flex items-center justify-center text-white/80 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-colors"
+              className="md:hidden p-2 flex items-center justify-center text-foreground/80 hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-lg border border-border transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -322,7 +326,7 @@ export default function Home() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="md:hidden absolute top-20 left-0 w-full bg-[#0a0a0b]/98 backdrop-blur-3xl border-b border-white/10 shadow-2xl overflow-hidden"
+              className="md:hidden absolute top-20 left-0 w-full bg-background/95 backdrop-blur-3xl border-b border-border shadow-2xl overflow-hidden"
             >
               <div className="flex flex-col p-6 gap-2">
                 {[
@@ -337,16 +341,20 @@ export default function Home() {
                     key={item.label}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-base font-medium text-muted-foreground hover:text-white hover:bg-white/5 transition-colors py-3 px-4 rounded-lg"
+                    className="text-base font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors py-3 px-4 rounded-lg"
                   >
                     {item.label}
                   </Link>
                 ))}
                 
-                <div className="h-px bg-white/10 my-4 mx-2" />
+                <div className="h-px bg-border my-4 mx-2" />
+                
+                <div className="flex justify-center mb-4">
+                  <ThemeToggle />
+                </div>
                 
                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="mx-2">
-                  <Button variant="outline" className="w-full justify-center border-white/10 bg-white/5 hover:bg-white/10 text-white hover:text-white">
+                  <Button variant="outline" className="w-full justify-center border-border bg-secondary/50 hover:bg-secondary text-foreground hover:text-foreground">
                     Masuk Akun
                   </Button>
                 </Link>
@@ -385,19 +393,19 @@ export default function Home() {
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link href="/login">
-                  <Button size="lg" className="h-14 px-8 text-lg bg-white text-background hover:bg-neutral-200">
+                  <Button size="lg" className="h-14 px-8 text-lg bg-foreground text-background hover:bg-foreground/90">
                     Mulai Analisis <Search className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-white/10 hover:bg-white/5">
+                  <Button size="lg" variant="outline" className="h-14 px-8 text-lg border-border hover:bg-secondary/50">
                     Bergabung
                   </Button>
                 </Link>
               </div>
               
               {/* Stats Mockup */}
-              <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/10 pt-10">
+              <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-border pt-10">
                 {[
                   { label: "Janji Dilacak", value: stats.promises.toLocaleString(), p: "Real-time DB" },
                   { label: "RUU Dianalisis", value: stats.legislations.toLocaleString(), p: "Real-time DB" },
@@ -411,7 +419,7 @@ export default function Home() {
                     key={stat.label} 
                     className="text-left p-4"
                   >
-                    <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                    <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
                     <div className="text-sm font-medium text-muted-foreground mb-1">{stat.label}</div>
                     <div className="text-xs text-primary">{stat.p}</div>
                   </motion.div>
@@ -491,10 +499,10 @@ export default function Home() {
                       </span>
                     </div>
                     <CardContent className="p-8">
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-500">
-                        <item.icon className="w-6 h-6 text-white group-hover:text-primary transition-colors" />
+                      <div className="w-14 h-14 rounded-2xl bg-secondary border border-border flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-500">
+                        <item.icon className="w-6 h-6 text-foreground group-hover:text-primary transition-colors" />
                       </div>
-                      <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
+                      <h3 className="text-xl font-bold mb-3 text-foreground">{item.title}</h3>
                       <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
                     </CardContent>
                   </Card>
@@ -552,7 +560,7 @@ export default function Home() {
                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
                       isActive
                         ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_20px_-5px_rgba(45,212,191,0.3)]"
-                        : "bg-white/[0.03] text-muted-foreground border border-white/[0.06] hover:bg-white/[0.06] hover:text-white hover:border-white/10"
+                        : "bg-secondary text-muted-foreground border border-border hover:bg-secondary/80 hover:text-foreground"
                     }`}
                   >
                     <CatIcon className="w-3.5 h-3.5" />
@@ -602,10 +610,10 @@ export default function Home() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="max-w-3xl mx-auto glass-panel p-12 md:p-16 rounded-[2.5rem] border border-white/10"
+              className="max-w-3xl mx-auto glass-panel p-12 md:p-16 rounded-[2.5rem] border border-border"
             >
               <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-6" />
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
                 Ambil Alih <span className="text-gradient">Kendali.</span>
               </h2>
               <p className="text-xl text-muted-foreground mb-10">
@@ -621,20 +629,20 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 bg-background/80 backdrop-blur-md pt-16 pb-8 relative z-10">
+      <footer className="border-t border-border bg-background/80 backdrop-blur-md pt-16 pb-8 relative z-10">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <Link href="/" className="flex items-center gap-2 mb-4">
                 <Activity className="w-6 h-6 text-primary" />
-                <span className="text-2xl font-bold text-white">RUUMY<span className="text-primary">.</span></span>
+                <span className="text-2xl font-bold text-foreground">RUUMY<span className="text-primary">.</span></span>
               </Link>
               <p className="text-muted-foreground max-w-sm">
                 Democratic Accountability Engine. Menjadikan transparansi bukan sekadar janji, tapi data yang bisa diverifikasi.
               </p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Platform</h4>
+              <h4 className="text-foreground font-semibold mb-4">Platform</h4>
               <ul className="space-y-2">
                 <li><Link href="/ruu-watch" className="text-muted-foreground hover:text-primary transition-colors">RUU Watch</Link></li>
                 <li><Link href="/database" className="text-muted-foreground hover:text-primary transition-colors">Database Janji</Link></li>
@@ -643,7 +651,7 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Organisasi</h4>
+              <h4 className="text-foreground font-semibold mb-4">Organisasi</h4>
               <ul className="space-y-2">
                 <li><Link href="#" className="text-muted-foreground hover:text-primary transition-colors">Tentang Kami</Link></li>
                 <li><Link href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</Link></li>
@@ -652,13 +660,13 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} RUUMY. All rights reserved. Built for Democracy.
             </p>
             <div className="flex gap-4 text-sm text-muted-foreground">
-              <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link href="#" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+              <Link href="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>

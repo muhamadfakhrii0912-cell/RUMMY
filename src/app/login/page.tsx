@@ -45,20 +45,20 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
       {/* Background Ambient Effects */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full mix-blend-screen filter blur-[100px] bg-primary opacity-20 animate-blob"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full mix-blend-screen filter blur-[100px] bg-blue-600 opacity-20 animate-blob" style={{ animationDelay: "2s" }}></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full mix-blend-screen filter blur-[100px] bg-slate-600 opacity-20 animate-blob" style={{ animationDelay: "2s" }}></div>
       <div className="absolute inset-0 bg-grid-white opacity-5"></div>
 
       {/* Main Form Content */}
       <div className="w-full max-w-md p-4 relative z-10 animate-fade-up">
         {/* Glassmorphism Card */}
         <Card className="glass-card-hover border-white/5 bg-background/40 backdrop-blur-3xl shadow-2xl overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-blue-500/5 z-0 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-slate-500/5 z-0 pointer-events-none"></div>
           
           <div className="relative z-10">
             <CardHeader className="space-y-3 pb-6">
               <div className="flex justify-center mb-2">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg shadow-primary/10 backdrop-blur-md">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-500 shadow-md"></div>
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-slate-500 shadow-md"></div>
                 </div>
               </div>
               <CardTitle className="text-3xl font-bold text-center tracking-tight text-white">
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 rounded-xl relative overflow-hidden group shadow-[0_0_20px_-5px_rgba(45,212,191,0.3)] hover:shadow-[0_0_25px_-5px_rgba(45,212,191,0.5)] transition-all duration-300"
+                  className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 rounded-xl relative overflow-hidden group shadow-[0_0_20px_-5px_rgba(100,116,139,0.3)] hover:shadow-[0_0_25px_-5px_rgba(100,116,139,0.5)] transition-all duration-300"
                   disabled={isLoading}
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
@@ -142,7 +142,7 @@ export default function LoginPage() {
               </div>
               <p className="text-sm text-center text-muted-foreground mt-4">
                 Belum punya akun?{" "}
-                <Link href="/register" className="text-primary font-semibold hover:text-primary/80 transition-colors drop-shadow-[0_0_10px_rgba(45,212,191,0.3)]">
+                <Link href="/register" className="text-primary font-semibold hover:text-primary/80 transition-colors drop-shadow-[0_0_10px_rgba(100,116,139,0.3)]">
                   Daftar sekarang
                 </Link>
               </p>
