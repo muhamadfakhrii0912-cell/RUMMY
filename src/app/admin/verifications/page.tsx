@@ -96,13 +96,13 @@ export default function KanbanVerifications() {
     },
   ];
 
-  if (loading) return <div className="p-8 text-center text-white animate-pulse">Memuat data Kanban...</div>;
+  if (loading) return <div className="p-8 text-center text-foreground animate-pulse">Memuat data Kanban...</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-3xl font-bold text-foreground flex items-center gap-2">
             <AlertTriangle className="w-6 h-6 text-primary" /> Moderasi Laporan Warga
           </h2>
           <p className="text-muted-foreground mt-1">
@@ -119,7 +119,7 @@ export default function KanbanVerifications() {
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, col.id as any)}
           >
-            <div className={`p-4 flex items-center justify-between border-b border-white/5 ${col.headerColor}`}>
+            <div className={`p-4 flex items-center justify-between border-b border-border ${col.headerColor}`}>
               <div className="flex items-center gap-2 font-bold">
                 {col.icon}
                 {col.title}
@@ -131,7 +131,7 @@ export default function KanbanVerifications() {
 
             <div className="flex-1 p-4 overflow-y-auto space-y-4">
                {items.filter(i => i.status === col.id).length === 0 ? (
-                 <div className="h-full flex items-center justify-center text-sm text-muted-foreground/50 border-2 border-dashed border-white/5 rounded-xl">
+                 <div className="h-full flex items-center justify-center text-sm text-muted-foreground/50 border-2 border-dashed border-border rounded-xl">
                    Tarik kartu ke sini
                  </div>
                ) : (
@@ -141,22 +141,22 @@ export default function KanbanVerifications() {
                     draggable
                     onDragStart={(e) => handleDragStart(e, item.id)}
                     onDragEnd={handleDragEnd}
-                    className="glass-card-hover border-white/10 bg-background/40 cursor-grab hover:border-primary/50 transition-all select-none active:cursor-grabbing"
+                    className="glass-card-hover border-border bg-card cursor-grab hover:border-primary/50 transition-all select-none active:cursor-grabbing shadow-sm"
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-semibold text-white text-sm line-clamp-2">{item.title}</h4>
+                        <h4 className="font-semibold text-foreground text-sm line-clamp-2">{item.title}</h4>
                       </div>
-                      <p className="text-xs text-muted-foreground mb-4 line-clamp-3 bg-white/5 p-2 rounded-lg border border-white/5">
+                      <p className="text-xs text-muted-foreground mb-4 line-clamp-3 bg-secondary p-2 rounded-lg border border-border">
                         {item.description}
                       </p>
-                      <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+                      <div className="flex flex-col gap-2 pt-2 border-t border-border">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                           <User className="w-3 h-3 text-primary" /> {item.user.name}
                         </div>
                         <div className="flex items-center justify-between text-[10px] text-muted-foreground/70">
                           <span>{new Date(item.createdAt).toLocaleDateString("id-ID")}</span>
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">ID: {item.id.slice(-4)}</span>
+                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary border border-border">ID: {item.id.slice(-4)}</span>
                         </div>
                       </div>
                     </CardContent>

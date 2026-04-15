@@ -57,7 +57,7 @@ export default async function AdminLayout({
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_15px_-3px_rgba(100,116,139,0.3)]">
               <ShieldAlert className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-white">
+            <span className="text-xl font-bold tracking-tight text-foreground">
               RUUMY<span className="text-primary">.</span>
             </span>
           </Link>
@@ -69,7 +69,7 @@ export default async function AdminLayout({
             const Icon = link.icon;
             return (
               <Link key={link.name} href={link.href}>
-                <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:text-white hover:bg-white/5 transition-all group">
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all group">
                   <Icon className="w-5 h-5 group-hover:text-primary transition-colors" />
                   <span className="font-medium text-sm">{link.name}</span>
                 </div>
@@ -80,18 +80,18 @@ export default async function AdminLayout({
 
         <div className="p-4 border-t border-primary/10 shrink-0">
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-slate-400 flex items-center justify-center text-white font-bold shadow-lg shadow-primary/20 shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">
               {(session.user.name || "A").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 overflow-hidden">
-              <div className="text-sm font-medium text-white truncate">{session.user.name}</div>
+              <div className="text-sm font-medium text-foreground truncate">{session.user.name}</div>
               <div className="text-[10px] font-bold text-primary uppercase tracking-wider">{userRole}</div>
             </div>
           </div>
-          <Link href="/dashboard" className="mt-4 flex items-center justify-center gap-2 p-2 rounded border border-white/10 text-muted-foreground hover:text-white hover:bg-white/5 transition-all w-full text-sm">
+          <Link href="/dashboard" className="mt-4 flex items-center justify-center gap-2 p-2 rounded border border-border text-muted-foreground hover:text-foreground hover:bg-secondary transition-all w-full text-sm">
             Kembali ke Citizen view
           </Link>
-          <Link href="/api/auth/signout" className="mt-2 flex items-center justify-center gap-2 p-2 rounded bg-destructive/10 text-destructive hover:bg-destructive text-sm font-medium transition-all w-full hover:text-white">
+          <Link href="/api/auth/signout" className="mt-2 flex items-center justify-center gap-2 p-2 rounded bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground text-sm font-medium transition-all w-full">
             <LogOut className="w-4 h-4" /> Keluar
           </Link>
         </div>
@@ -103,7 +103,7 @@ export default async function AdminLayout({
         <header className="h-20 border-b border-primary/10 bg-background/50 backdrop-blur-xl flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 shrink-0">
           <div className="flex items-center text-muted-foreground">
             <AdminMobileNav session={session} userRole={userRole} />
-            <h1 className="text-lg font-bold text-white flex items-center gap-2 ml-2 md:ml-0">
+            <h1 className="text-lg font-bold text-foreground flex items-center gap-2 ml-2 md:ml-0">
               <span className="hidden sm:inline">System Administrator</span>
               <span className="sm:hidden">Admin</span>
               <span className="px-2 py-0.5 rounded text-[10px] uppercase bg-primary/20 text-primary border border-primary/30">Secure</span>
@@ -115,10 +115,10 @@ export default async function AdminLayout({
               <input 
                 type="text" 
                 placeholder="Global ID Search..." 
-                className="w-64 bg-white/5 border border-white/10 rounded-full py-2 pl-9 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-muted-foreground/50"
+                className="w-64 bg-secondary border border-border rounded-full py-2 pl-9 pr-4 text-sm text-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-muted-foreground/70"
               />
             </div>
-            <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:text-white hover:bg-white/10 transition-all relative">
+            <button className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all relative">
               <Bell className="w-5 h-5" />
             </button>
           </div>
